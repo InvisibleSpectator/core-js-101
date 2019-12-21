@@ -325,8 +325,36 @@ function getPositivesCount(arr) {
  *   [ 'nine','eight','nine','eight'] => [ 'eight','eight','nine','nine']
  *   [ 'one','one','one','zero' ]     => [ 'zero','one','one','one' ]
  */
-function sortDigitNamesByNumericOrder(/* arr */) {
-  throw new Error('Not implemented');
+function sortDigitNamesByNumericOrder(arr) {
+  const p = {
+    zero: 0,
+    one: 1,
+    two: 2,
+    three: 3,
+    four: 4,
+    five: 5,
+    six: 6,
+    seven: 7,
+    eight: 8,
+    nine: 9,
+  };
+
+  const t = {
+    0: 'zero',
+    1: 'one',
+    2: 'two',
+    3: 'three',
+    4: 'four',
+    5: 'five',
+    6: 'six',
+    7: 'seven',
+    8: 'eight',
+    9: 'nine',
+  };
+  const a1 = arr.map((v) => p[v]);
+  const a2 = a1.sort();
+  const a3 = a2.map((v) => t[v]);
+  return a3;
 }
 
 /**
@@ -421,8 +449,24 @@ function toStringList(arr) {
  *      { country: 'Russia',  city: 'Saint Petersburg' }
  *    ]
  */
-function sortCitiesArray(/* arr */) {
-  throw new Error('Not implemented');
+function sortCitiesArray(arr) {
+  return arr.sort((a, b) => {
+    if (a.country > b.country) {
+      return 1;
+    }
+    if (a.country < b.country) {
+      return -1;
+    }
+    if (a.country === b.country) {
+      if (a.city > b.city) {
+        return 1;
+      }
+      if (a.city < b.city) {
+        return -1;
+      }
+    }
+    return 0;
+  });
 }
 
 /**
@@ -444,10 +488,15 @@ function sortCitiesArray(/* arr */) {
  *           [0,0,0,0,1]]
  */
 function getIdentityMatrix(n) {
-  const a = new Array(n);
-  for (let i = 0; i < a.length; i += 1) a[i] = new Array(n).fill(0);
-  for (let i = 0; i < n; i += 1) a[i][i] = 1;
-  return a;
+  const o = new Array(n).fill(0);
+  const r = [];
+  o.map((e, i) => {
+    const y = new Array(n).fill(0);
+    y[i] = 1;
+    r.push(y);
+    return e;
+  });
+  return r;
 }
 
 /**
@@ -464,9 +513,12 @@ function getIdentityMatrix(n) {
  *     3, 3   => [ 3 ]
  */
 function getIntervalArray(start, end) {
-  const a = [];
-  for (let i = start; i <= end; i += 1) a.push(i);
-  return a;
+  const i = new Array(end - start + 1).fill(start);
+  i.reduce((a, e, j) => {
+    i[j] = a + 1;
+    return a + 1;
+  });
+  return i;
 }
 
 /**
@@ -514,8 +566,16 @@ function distinct(arr) {
  *    "Poland" => ["Lodz"]
  *   }
  */
-function group(/* array, keySelector, valueSelector */) {
-  throw new Error('Not implemented');
+function group(array, keySelector, valueSelector) {
+  const map = new Map();
+  const keys = Array.from(new Set(array.map((item) => keySelector(item))));
+  keys.map(
+    (e) => {
+      map.set(e, array.filter((e1) => keySelector(e1) === e).map((e2) => valueSelector(e2)));
+      return '';
+    },
+  );
+  return map;
 }
 
 
@@ -532,8 +592,8 @@ function group(/* array, keySelector, valueSelector */) {
  *   [[1, 2], [3, 4], [5, 6]], (x) => x     =>   [ 1, 2, 3, 4, 5, 6 ]
  *   ['one','two','three'], x=>x.split('')  =>   ['o','n','e','t','w','o','t','h','r','e','e']
  */
-function selectMany(/* arr, childrenSelector */) {
-  throw new Error('Not implemented');
+function selectMany(arr, childrenSelector) {
+  return arr.map(childrenSelector).reduce((acc, val) => acc.concat(val));
 }
 
 
@@ -550,11 +610,8 @@ function selectMany(/* arr, childrenSelector */) {
  *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]      => 2        (arr[0][0][1])
  */
 function getElementByIndexes(arr, indexes) {
-  let tmp = arr;
-  for (let i = 0; i < indexes.length; i += 1) {
-    tmp = tmp[indexes[i]];
-  }
-  return tmp;
+  const o = new Array(indexes.length).fill(0);
+  return o.reduce((a, e, i) => a[indexes[i]], arr);
 }
 
 
@@ -576,8 +633,16 @@ function getElementByIndexes(arr, indexes) {
  *   [ 1, 2, 3, 4, 5, 6, 7, 8 ]   =>  [ 5, 6, 7, 8, 1, 2, 3, 4 ]
  *
  */
-function swapHeadAndTail(/* arr */) {
-  throw new Error('Not implemented');
+function swapHeadAndTail(arr) {
+  if (arr.length % 2 !== 0) { // нечетное
+    const a1 = arr.slice(0, Math.floor(arr.length / 2));
+    const a2 = arr.slice(Math.floor(arr.length / 2) + 1);
+    a2.push(arr[Math.floor(arr.length / 2)]);
+    return a2.concat(a1);
+  }
+  const c1 = arr.slice(0, arr.length / 2);
+  const c2 = arr.slice((arr.length / 2));
+  return c2.concat(c1);
 }
 
 
